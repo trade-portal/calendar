@@ -1,0 +1,49 @@
+title: My Site
+description: My very nice site
+
+# Development URL
+#importmap:
+  #devurl: 'http://127.0.0.1:4000/jekyll-tailwind-stimulus'
+
+# Staging URL
+url: 'n-at-han-k.github.io'
+baseurl: '/jekyll-tailwind-stimulus'
+
+# Production
+#url: 'jekyll-tailwind-stimulus.com'
+
+plugins:
+  - jekyll-postcss-v2
+  - jekyll-importmap
+  #- jekyll-seo-tag
+  #- jekyll-sitemap
+  #- jekyll-archives
+  #- jekyll-paginate
+  #- jemoji
+
+postcss:
+  cache: false
+
+exclude: 
+  - .gitignore
+  - .github
+  - docker-compose.yml
+  - Gemfile
+  - Gemfile.lock
+  - LICENSE
+  - README.md
+  - package.json
+  - postcss.config.js
+  - tailwind.config.js
+  - yarn.lock
+  - node_modules
+  - package-lock.json
+  - Dockerfile
+  - importmap.rb
+  - yarn-error.log
+
+include:
+  - _pages
+
+#########################################
+# CUSTOM BELOW
