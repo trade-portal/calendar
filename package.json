@@ -1,10 +1,14 @@
 {
-  "dependencies": {
-    "@tailwindcss/typography": "^0.5.10",
-    "autoprefixer": "^10.4.18",
-    "cssnano": "^6.1.0",
-    "postcss": "^8.4.35",
-    "postcss-import": "^16.0.1",
-    "tailwindcss": "^3.4.1"
+  "name": "stimulus-calendar",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^6.2.0"
   }
 }
