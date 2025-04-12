@@ -15,32 +15,6 @@ const ONE_DAY = 1
 const FIRST = 0
 const LAST = -1
 
-function offsetArray(array, offset) {
-  return [
-    ...array.slice(offset),
-    ...array.slice(FIRST, offset)
-  ]
-}
-
-function weekdaysStartingWith(startDay) {
-  return offsetArray(WEEKDAYS, startDay)
-}
-
-function startOfYear(date) {
-  return new Date(date.getFullYear(), JANUARY, THE_FIRST)
-}
-
-function dateSeries(startDate, endDate) {
-  let dates = []
-  let currentDate = new Date(startDate)
-  while (currentDate < endDate) {
-    dates.push(currentDate)
-    currentDate = new Date(currentDate)
-    currentDate.setDate(currentDate.getDate() + ONE_DAY)
-  }
-  return dates
-}
-
 /**
  * The problem we're solving here is that we need to calculate the empty
  * spaces before or after a week or month.
@@ -60,7 +34,7 @@ function dateSeries(startDate, endDate) {
  *
  * Then we can iterate per week and then per day.
  */
-export default class RangeGrid {
+export default class DateRangeGrid {
   constructor(startDate, endDate, weekStart = MONDAY) {
     this.startDate = startDate
     this.startDateDay = startDate.getDay()
@@ -142,4 +116,30 @@ export default class RangeGrid {
   get extraEndDays() {
     return this.weekdays.length - this.weekdays.indexOf(this.endDateDay)
   }
+}
+
+function offsetArray(array, offset) {
+  return [
+    ...array.slice(offset),
+    ...array.slice(FIRST, offset)
+  ]
+}
+
+function weekdaysStartingWith(startDay) {
+  return offsetArray(WEEKDAYS, startDay)
+}
+
+function startOfYear(date) {
+  return new Date(date.getFullYear(), JANUARY, THE_FIRST)
+}
+
+function dateSeries(startDate, endDate) {
+  let dates = []
+  let currentDate = new Date(startDate)
+  while (currentDate < endDate) {
+    dates.push(currentDate)
+    currentDate = new Date(currentDate)
+    currentDate.setDate(currentDate.getDate() + ONE_DAY)
+  }
+  return dates
 }
