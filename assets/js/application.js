@@ -1,6 +1,6 @@
 import 'controllers'
 import {
-  RangeGrid,
+  DateRangeGrid,
   OCTOBER,
   MONDAY
 } from 'helpers'
