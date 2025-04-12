@@ -5,6 +5,7 @@ export const WEDNESDAY = 3
 export const THURSDAY  = 4
 export const FRIDAY    = 5
 export const SATURDAY  = 6
+export const WEEKDAYS = [SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY]
 
 export const JANUARY   = 0
 export const FEBRUARY  = 1
@@ -20,6 +21,7 @@ export const NOVEMBER  = 10
 export const DECEMBER  = 11
 
 export const THE_FIRST = 1
+export const ONE_DAY = 1
 
 export const AT_MIDNIGHT = 0
 export const AT_1AM = 1
@@ -48,3 +50,33 @@ export const AT_10PM   = 22
 export const AT_11PM   = 23
 
 export const START_OF_ALL_TIME = new Date(1970, JANUARY, THE_FIRST, AT_MIDNIGHT)
+
+// Used for arrays
+export const FIRST = 0
+export const LAST = -1
+
+export function offsetArray(array, offset) {
+  return [
+    ...array.slice(offset),
+    ...array.slice(FIRST, offset)
+  ]
+}
+
+export function weekdaysStartingWith(startDay) {
+  return offsetArray(WEEKDAYS, startDay)
+}
+
+export function startOfYear(date) {
+  return new Date(date.getFullYear(), JANUARY, THE_FIRST)
+}
+
+export function dateSeries(startDate, endDate) {
+  let dates = []
+  let currentDate = new Date(startDate)
+  while (currentDate < endDate) {
+    dates.push(currentDate)
+    currentDate = new Date(currentDate)
+    currentDate.setDate(currentDate.getDate() + ONE_DAY)
+  }
+  return dates
+}

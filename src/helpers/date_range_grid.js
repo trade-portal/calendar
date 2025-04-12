@@ -1,19 +1,11 @@
-const SUNDAY    = 0
-const MONDAY    = 1
-const TUESDAY   = 2
-const WEDNESDAY = 3
-const THURSDAY  = 4
-const FRIDAY    = 5
-const SATURDAY  = 6
-const WEEKDAYS = [SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY]
+import {
+  MONDAY,
+  FIRST,
+  LAST,
+  weekdaysStartingWith,
+  dateSeries,
+} from './date_constants.js'
 
-const JANUARY  = 0
-const THE_FIRST = 1
-const ONE_DAY = 1
-
-// Used for arrays
-const FIRST = 0
-const LAST = -1
 
 /**
  * The problem we're solving here is that we need to calculate the empty
@@ -37,10 +29,10 @@ const LAST = -1
 export default class DateRangeGrid {
   constructor(startDate, endDate, weekStart = MONDAY) {
     this.startDate = startDate
-    this.startDateDay = startDate.getDay()
+    this.startDateDay = startDate.getDay() // day of the week
 
     this.endDate = endDate
-    this.endDateDay = endDate.getDay()
+    this.endDateDay = endDate.getDay() // day of the week
 
     this.weekdays  = weekdaysStartingWith(weekStart)
 
@@ -83,7 +75,7 @@ export default class DateRangeGrid {
 
   get gridStartDate() {
     if (this.startsOnWeekStart()) {
-      return this.startDate
+      return new Date(this.startDate)
     } else {
       let gridStartDate = new Date(this.startDate)
       gridStartDate.setDate(this.startDate.getDate() - this.extraStartDays)
@@ -93,7 +85,7 @@ export default class DateRangeGrid {
 
   get gridEndDate() {
     if (this.endsOnWeekEnd()) {
-      return this.endDate
+      return new Date(this.endDate)
     } else {
       let gridEndDate = new Date(this.endDate)
       gridEndDate.setDate(this.endDate.getDate() + this.extraEndDays)
@@ -116,30 +108,4 @@ export default class DateRangeGrid {
   get extraEndDays() {
     return this.weekdays.length - this.weekdays.indexOf(this.endDateDay)
   }
-}
-
-function offsetArray(array, offset) {
-  return [
-    ...array.slice(offset),
-    ...array.slice(FIRST, offset)
-  ]
-}
-
-function weekdaysStartingWith(startDay) {
-  return offsetArray(WEEKDAYS, startDay)
-}
-
-function startOfYear(date) {
-  return new Date(date.getFullYear(), JANUARY, THE_FIRST)
-}
-
-function dateSeries(startDate, endDate) {
-  let dates = []
-  let currentDate = new Date(startDate)
-  while (currentDate < endDate) {
-    dates.push(currentDate)
-    currentDate = new Date(currentDate)
-    currentDate.setDate(currentDate.getDate() + ONE_DAY)
-  }
-  return dates
 }
