@@ -14,6 +14,6 @@ console.log('start + end')
 console.log(start)
 console.log(end)
 
-window.grid = new RangeGrid(start, end, MONDAY)
+window.grid = new DateRangeGrid(start, end, MONDAY)
 console.log(grid.days)
 console.log('^ grid.days')
