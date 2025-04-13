@@ -86,7 +86,7 @@ export default class EventMatrix {
     if (this.offset + 1 >= this.size) {
       return 0
     } else {
-      let percentage = (this.columnStart() + this.columnWidth())
+      let percentage = 100 - (this.columnStart() + this.columnWidth())
       return percentage
     }
   }
