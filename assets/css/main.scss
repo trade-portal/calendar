@@ -13,6 +13,14 @@ $headerElements: 1;
   --eventColor2: #fafaa3;
   --eventColor3: #e2f8ff;
   --eventColor4: #d1ffe6;
+
+  --timelineListWidth: 85px;
+  --scrollbarWidth: 15px;
+}
+
+.page-container {
+  height: 100vh;
+  width: 100%;
 }
 
 @for $i from 0 through 11 {
@@ -35,100 +43,167 @@ $headerElements: 1;
   }
 }
 
-.calendar {
-  display: grid;
-  gap: 10px;
-  grid-template-columns: auto 1fr;
-  margin: 2rem;
+@for $i from 0 through 23 {
+  .time-hour-#{$i} {
+    grid-area: #{(60 * $i) + 1} / 1 / #{(60 * $i) + 2} / 2;
+  }
+}
 
-  .timeline {
-    display: grid;
-    grid-template-rows: repeat(var(--numHours), var(--timeHeight));
+.tp- {
 
-    .time {
-      transform: translateY(-0.6rem)
+  &calendar {
+    //height: 100%;
+    //width: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+
+    &__controls {
+      display: flex;
+      height: 40px;
+      padding-inline: 0px;
+      margin-block-end: 22px;
+      -webkit-box-align: center;
+      align-items: center;
+      -webkit-box-pack: justify;
+      justify-content: space-between;
+    }
+
+    &__content {
+      min-height: 0px;
+      outline: none;
+      overflow: hidden;
+
+      display: flex;
+      flex-direction: column;
+      //height: 100%;
+
     }
   }
 
-  .days {
-    display: grid;
-    grid-column: 2;
-    gap: 5px;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  &content {
+
+    &__scroll {
+      overflow-y: auto;
+    }
+
+    &-header {
+      display: grid;
+      grid-template-columns: var(--timelineListWidth) auto;
+      grid-template-rows: 1fr;
+      gap: 0px;
+      
+      > div:nth-child(1), {
+        width: var(--timelineListWidth);
+      }
+
+      &-container {
+        display: grid;
+        grid-auto-columns: auto;
+        grid-auto-flow: column dense;
+        padding-right: var(--scrollbarWidth);
+      }
+
+      .heading {
+        grid-row-start: 1;
+        grid-row-end: 1;
+      }
+    }
+
+    &-area {
+      position: relative;
+
+      display: flex;
+
+      //height: calc(200%);
+      //overflow: hidden;
+      //min-height: 960px;
+
+    }
+
+    &__timeline {
+      display: grid;
+      grid-template-columns: 90px;
+      grid-template-rows: repeat(1440, 1fr);
+      gap: 0px;
+      height: 100%;
+      width: var(--timelineListWidth);
+
+      .time {
+        height: 1px;
+      }
+
+      .time-label {
+        position: relative;
+        top: -8px;
+        left: -20px;
+        height: 20px;
+        width: 90px;
+        overflow: hidden;
+        text-align: right;
+      }
+    }
+
+    &__matrix {
+      position: relative;
+      flex: 1 1;
+    }
+  }
+
+  &matrix {
+
+    &__background {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+
+    }
+
+    &__lines {
+
+      &-vertical {
+        position: absolute;
+        //height: 100%;
+        //width: 100%;
+        display: flex;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+
+      &-column {
+        flex: 1 1 0%;
+        background-color: #fafafa;
+        border-left: 1px solid #ccc;
+      }
+
+      &-horizontal {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+
+        .line {
+          position: absolute;
+          width: 100%;
+          border-bottom: 1px solid #252525;
+        }
+      }
+
+    }
+
+    &__events {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
 
   }
 
-  .header {
-    font-weight: 600;
-    height: 60px;
-    //margin-bottom: 1rem;
-  }
 }
 
-
-
-.events {
-  display: grid;
-  grid-template-rows: repeat(var(--numHours), var(--timeHeight));
-  border-radius: 5px;
-  background: var(--calBgColor);
-  position: relative;
-}
-
-.event {
-  border: 1px solid var(--eventBorderColor);
-  display: flex;
-  grid-column: auto;
-  border-radius: 5px;
-  box-sizing: border-box;
-  background: white;
-
-  .wrapper {
-    flex-grow: 1;
-    width: 100;
-
-  }
-}
-
-.space,
-.date {
-  height: 60px
-}
-
-
-body {
-  font-family: system-ui, sans-serif;
-}
-
-.corp-fi {
-  background: var(--eventColor1);
-}
-
-.ent-law {
-  background: var(--eventColor2);
-}
-
-.writing {
-  background: var(--eventColor3);
-}
-
-.securities {
-  background: var(--eventColor4);
-}
-
-.date {
-  display: flex;
-  gap: 1em;
-}
-
-.date-num {
-  font-size: 3rem;
-  font-weight: 600;
-  display: inline;
-}
-
-.date-day {
-  display: inline;
-  font-size: 3rem;
-  font-weight: 100;
-}
