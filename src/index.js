@@ -1,70 +1,64 @@
 import { Controller } from "@hotwired/stimulus"
-import CalEvent from "./cal_event.js"
-import Month from "./views/month.js"
+import { 
+  TemplateDirectory,
+  RenderingEngine,
+  testEventData,
+  groupBy,
+  EventMatrix,
+} from 'helpers'
 
-// Connects to data-controller="example"
-export default class extends Controller {
-  static values = { 
-    events: Object,
-    view: String
+// I'm sure there's a way to generate this dynamically
+// but I just couldn't be arsed at the time.
+const TIMELINE = [
+       '', '01:00', '02:00',
+  '03:00', '04:00', '05:00',
+  '06:00', '07:00', '08:00',
+  '09:00', '10:00', '11:00',
+  '12:00', '13:00', '14:00',
+  '15:00', '16:00', '17:00',
+  '18:00', '19:00', '20:00',
+  '21:00', '22:00', '23:00',
+]
+
+const renderingEngine = new RenderingEngine(new TemplateDirectory())
+
+export default class CalendarController extends Controller {
+  static values = {
+    startDate: String,
+    viewType:  {type: String, default: 'timeline'}
   }
-  get viewObject() {
-    switch (this.viewValue) {
-      case "month":
-        return new Month(this.eventObjects)
-      case "week":
-        return new Week(this.eventObjects)
-      case "day":
-        return new Day(this.eventObjects)
-    }
-  }
+  static targets = ['timeline', 'view']
 
   connect() {
-    this.events = []
-    this.eventsValue = {
-      "events": [
-        {
-          "start": "",
-          "end": "",
-          "title": "job",
-          "description": "this is a job",
-          "id": "53"
-        }
-      ]
+    this.events = this.eventData.data
+    this.sortEvents()
+    this.eventsByDate = groupBy(this.events, 'date')
+
+    // render view
+    let viewData = {
+      times: TIMELINE,
+      totalDays: 7,
     }
+    let view = renderingEngine.renderTemplate(this.viewTypeValue, viewData)
+    this.viewTarget.replaceWith(view)
+    //this.viewTarget.prepend(view)
+    //this.viewTarget.appendChild(view)
   }
 
-  render() {
-    const events = this.eventsValue
-    this.renderCalendar()
-    this.renderEvents()
-
-  }
-  eventsValueChanged() {
-    this.events = this.eventObjects
-    this.render()
-  }
-  renderCalendar() {
-    this.renderControls()
-    this.element.innerHTML = this.viewObject.render()
-  }
-  renderEvents() {
-  }
-
-  renderControls() {
-  }
-
-  get eventObjects() {
-    const array = []
-    console.log(this.eventsValue)
-    if (!this.eventsValue.events) {
-      return 
-    }
-    this.eventsValue.events.forEach(event_data => {
-      const cal_event = new CalEvent(event_data)
-      array.push(cal_event)
+  // Sort by start date
+  sortEvents() {
+    this.events.sort((a, b) => {
+      if (a.start < b.start) {
+        return -1
+      } else if (a.start > b.start) {
+        return 1
+      }
+      return 0
     })
-    return array
-  } 
-}
+  }
 
+  get eventData() {
+    let today = new Date()
+    return testEventData(today)
+  }
+}

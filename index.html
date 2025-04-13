@@ -14,7 +14,7 @@
     "@hotwired/stimulus-loading": "http://localhost:5000/assets/js/stimulus-loading.js",
     "controllers": "http://localhost:5000/assets/js/controllers/index.js",
     "controllers/application": "http://localhost:5000/assets/js/controllers/application.js",
-    "controllers/calendar_controller": "http://localhost:5000/assets/js/controllers/calendar_controller.js",
+    "tp-calendar": "http://localhost:5000/src/index.js",
     "helpers": "http://localhost:5000/src/helpers/index.js"
   }
 }
@@ -28,18 +28,9 @@
   </head>
   <body>
     <div class="page-container">
-      <div class="tp-calendar" data-controller="calendar">
-        <div class="tp-calendar__controls" data-calendar-target="controls"></div>
-        <div class="tp-calendar__content" data-calendar-target="view">
-          <div class="tp-content-header"></div>
-          <div class="tp-content__scroll">
-            <div class="tp-content-area">
-              <div class="tp-content__matrix">
-                <div class="tp-matrix__events"></div>
-              </div>
-              <div class="marker"></div>
-            </div>
-          </div>
+      <div class="tp-calendar" data-controller="tp-calendar">
+        <div class="tp-calendar__controls" data-tp-calendar-target="controls"></div>
+        <div class="tp-calendar__content" data-tp-calendar-target="view">
         </div>
       </div>
     </div>
