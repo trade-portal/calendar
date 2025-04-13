@@ -20,8 +20,11 @@ const TIMELINE = [
 const renderingEngine = new RenderingEngine(new TemplateDirectory())
 
 /**
- * TODO: implement a callback to set the padding on the header based
- * on scrollbar width of the content
+ * TODO
+ * -------------------
+ * - [ ] Implement a callback to set the padding on the header based
+ *       on scrollbar width of the content.
+ * - [ ] Make more responsive on mobile.
  */
 export default class CalendarController extends Controller {
   static values = {

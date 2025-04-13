@@ -2,8 +2,9 @@ import { Application } from "@hotwired/stimulus"
 
 const application = Application.start()
 
-import { CalendarController } from 'tp-calendar'
-application.register('tp-calendar', CalendarController)
+import { CalendarController, MatrixController } from 'tpc-calendar'
+application.register('tpc-calendar', CalendarController)
+application.register('tpc-matrix', MatrixController)
 
 // Configure Stimulus development experience
 application.debug = true

@@ -2,7 +2,6 @@ $numberOfDays: 7;
 $numberOfHours: #{24 * 2};
 $headerElements: 1;
 
-
 :root {
   --numDays: #{$numberOfDays};
   --numHours: #{$numberOfHours};
@@ -49,7 +48,7 @@ $headerElements: 1;
   }
 }
 
-.tp- {
+.tpc- {
 
   &calendar {
     //height: 100%;

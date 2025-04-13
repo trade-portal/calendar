@@ -1,5 +1,5 @@
 import 'controllers'
-import { DateRangeGrid, WeekRange } from 'tp-calendar'
+import { DateRangeGrid, WeekRange } from 'tpc-calendar'
 import { OCTOBER, MONDAY } from 'helpers'
 
 //const year = 2025

@@ -329,13 +329,13 @@
   grid-area: 1381/1/1382/2;
 }
 
-.tp-calendar {
+.tpc-calendar {
   display: flex;
   flex-direction: column;
   height: 100%;
   width: 100%;
 }
-.tp-calendar__controls {
+.tpc-calendar__controls {
   display: flex;
   height: 40px;
   padding-inline: 0px;
@@ -345,40 +345,40 @@
   -webkit-box-pack: justify;
   justify-content: space-between;
 }
-.tp-calendar__content {
+.tpc-calendar__content {
   min-height: 0px;
   outline: none;
   overflow: hidden;
   display: flex;
   flex-direction: column;
 }
-.tp-content__scroll {
+.tpc-content__scroll {
   overflow-y: auto;
 }
-.tp-content-header {
+.tpc-content-header {
   display: grid;
   grid-template-columns: var(--timelineListWidth) auto;
   grid-template-rows: 1fr;
   gap: 0px;
 }
-.tp-content-header > div:nth-child(1) {
+.tpc-content-header > div:nth-child(1) {
   width: var(--timelineListWidth);
 }
-.tp-content-header-container {
+.tpc-content-header-container {
   display: grid;
   grid-auto-columns: auto;
   grid-auto-flow: column dense;
   padding-right: var(--scrollbarWidth);
 }
-.tp-content-header .heading {
+.tpc-content-header .heading {
   grid-row-start: 1;
   grid-row-end: 1;
 }
-.tp-content-area {
+.tpc-content-area {
   position: relative;
   display: flex;
 }
-.tp-content__timeline {
+.tpc-content__timeline {
   display: grid;
   grid-template-columns: 90px;
   grid-template-rows: repeat(1440, 1fr);
@@ -386,10 +386,10 @@
   height: 100%;
   width: var(--timelineListWidth);
 }
-.tp-content__timeline .time {
+.tpc-content__timeline .time {
   height: 1px;
 }
-.tp-content__timeline .time-label {
+.tpc-content__timeline .time-label {
   position: relative;
   top: -8px;
   left: -20px;
@@ -398,18 +398,18 @@
   overflow: hidden;
   text-align: right;
 }
-.tp-content__matrix {
+.tpc-content__matrix {
   position: relative;
   flex: 1 1;
 }
-.tp-matrix__background {
+.tpc-matrix__background {
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
 }
-.tp-matrix__lines-vertical {
+.tpc-matrix__lines-vertical {
   position: absolute;
   display: flex;
   top: 0;
@@ -417,24 +417,24 @@
   left: 0;
   right: 0;
 }
-.tp-matrix__lines-column {
+.tpc-matrix__lines-column {
   flex: 1 1 0%;
   background-color: #fafafa;
   border-left: 1px solid #ccc;
 }
-.tp-matrix__lines-horizontal {
+.tpc-matrix__lines-horizontal {
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
 }
-.tp-matrix__lines-horizontal .line {
+.tpc-matrix__lines-horizontal .line {
   position: absolute;
   width: 100%;
   border-bottom: 1px solid #252525;
 }
-.tp-matrix__events {
+.tpc-matrix__events {
   width: 100%;
   height: 100%;
   position: relative;

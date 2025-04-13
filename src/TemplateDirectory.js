@@ -1,10 +1,9 @@
-const INNER_CONTENT  = 0
-
 /**
  * The idea of the templates, is that you provide a function
  * that returns a renderable array
  *
  * The use of the "spread syntax" (...) is cruicial for easy to read templates.
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax
  */
 export default class TemplateDirectory {
   constructor() {
@@ -21,6 +20,16 @@ export default class TemplateDirectory {
     return template(props)
   }
 
+  /**
+   * TEMPLATES:
+   * --------------------
+   *  - timeline            | The calendar view for week and day
+   *  - timelineHeader      | The fixed header showing dates
+   *  - timelineDayHeader   | The individual header elements for each day
+   *  - timelineList        | The list of times down the side
+   *  - timelineMatrix      | The event container
+   *  - timelineBackground  | The background of the event container
+   */
   get defaultTemplates() {
     return [
       {
@@ -34,13 +43,13 @@ export default class TemplateDirectory {
           //console.log('matrix', matrix)
 
           let template = [
-            ['div', {class: 'tp-content-header'}, ...header],
-            ['div', {class: 'tp-content__scroll'},
-              ['div', {class: 'tp-content-area'}, 
-                ['div', {class: 'tp-content__timeline'}, ...timeline],
-                ['div', {class: 'tp-content-area'}, ''],
-                ['div', {class: 'tp-content__matrix'}, ...matrix],
-                ['div', {class: 'tp-current-marker'}, ...marker],
+            ['div', {class: 'tpc-content-header'}, ...header],
+            ['div', {class: 'tpc-content__scroll'},
+              ['div', {class: 'tpc-content-area'}, 
+                ['div', {class: 'tpc-content__timeline'}, ...timeline],
+                ['div', {class: 'tpc-content-area'}, ''],
+                ['div', {class: 'tpc-content__matrix', 'data-controller': 'tpc-matrix'}, ...matrix],
+                ['div', {class: 'tpc-current-marker'}, ...marker],
               ]
             ]
           ]
@@ -63,7 +72,7 @@ export default class TemplateDirectory {
 
           let template = [
             ['div', {class: ''}, ''],
-            ['div', {class: 'tp-content-header-container'}, ...headers],
+            ['div', {class: 'tpc-content-header-container'}, ...headers],
           ]
 
           return template
@@ -101,8 +110,8 @@ export default class TemplateDirectory {
           let background = this.get('timelineBackground', props)
 
           let template = [
-            ['div', {class: 'tp-matrix__events'}, ...events],
-            ['div', {class: 'tp-matrix__background'}, ...background]
+            ['div', {class: 'tpc-matrix__events'}, ...events],
+            ['div', {class: 'tpc-matrix__background'}, ...background]
           ]
 
           //console.log('week matrix', background)
@@ -116,18 +125,18 @@ export default class TemplateDirectory {
         "data": (props) => {
 
           let template = [
-            ['div', {class: 'tp-matrix__lines-vertical'},
+            ['div', {class: 'tpc-matrix__lines-vertical'},
               ...(totalDays => {
                 let columns = []
                 for (let i = 0; i < totalDays; i++) {
                   columns.push(
-                    ['div', {class: 'tp-matrix__lines-column'}, ''],
+                    ['div', {class: 'tpc-matrix__lines-column'}, ''],
                   )
                 }
                 return columns
               })(props.totalDays)
             ],
-            ['div', {class: 'tp-matrix__lines-horizontal'}, 
+            ['div', {class: 'tpc-matrix__lines-horizontal'}, 
               ...(props => {
                 let lines = []
                 for (let hour = 1; hour < 24; hour++) {
@@ -144,14 +153,6 @@ export default class TemplateDirectory {
           //console.log('week background', template)
 
           return template
-        }
-      },
-      {
-        "name": "day",
-        "data": (props) => {
-          return [
-            ['div', {class: 'day'}, '']
-          ]
         }
       },
     ]
