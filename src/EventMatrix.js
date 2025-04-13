@@ -62,6 +62,7 @@ export default class EventMatrix {
     this.offset = offset
     this.size = size
 
+    this.generateMatrix(events)
     this.events = events.map(((event) => {
       return this.generateEventStruct(event)
     }).bind(this))
@@ -109,6 +110,17 @@ export default class EventMatrix {
         right:  right,
       }
     }
+  }
+
+  // We need to work out how many cells to an hours
+  // Then the start point.
+  // Then how many hours the event takes up.
+  // Then we will know which points to fill
+  // Then find the next free space, and record the row.
+  generateMatrix(events) {
+    events.forEach(((event) => {
+      //this.addEvent(event)
+    }).bind(this))
   }
 }
 

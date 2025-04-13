@@ -31,6 +31,7 @@ const renderingEngine = new RenderingEngine(new TemplateDirectory())
  * - [ ] Implement a callback to set the padding on the header based
  *       on scrollbar width of the content.
  * - [ ] Make more responsive on mobile.
+ * - [ ] Expand events that span multiple days or allow the server to do that
  */
 export default class CalendarController extends Controller {
   static values = {
