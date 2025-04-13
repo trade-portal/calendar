@@ -19,6 +19,10 @@ const TIMELINE = [
 
 const renderingEngine = new RenderingEngine(new TemplateDirectory())
 
+/**
+ * TODO: implement a callback to set the padding on the header based
+ * on scrollbar width of the content
+ */
 export default class CalendarController extends Controller {
   static values = {
     startDate: String,
@@ -40,6 +44,7 @@ export default class CalendarController extends Controller {
     this.viewTarget.replaceWith(view)
     //this.viewTarget.prepend(view)
     //this.viewTarget.appendChild(view)
+
   }
 
   // Sort by start date
