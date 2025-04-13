@@ -3,6 +3,8 @@ import {
   AT_7AM, AT_8AM, AT_9AM, AT_10AM, AT_11AM, AT_MIDDAY,
 } from './constants.js'
 
+import { dateToString } from './functions.js'
+
 export default function testEventData(date) {
   let year  = date.getFullYear()
   let month = date.getMonth()
@@ -19,9 +21,9 @@ export default function testEventData(date) {
 
   let data = times.map(function({from, until}) {
     return {
-      start:  (new Date(year, month, day, from)),
-      finish: (new Date(year, month, day, until)),
-      date: (new Date(year, month, day, 0)).toJSON()
+      start:  (new Date(year, month, day, from)).toJSON(),
+      finish: (new Date(year, month, day, until)).toJSON(),
+      date:   dateToString(new Date(year, month, day))
     }
   })
 

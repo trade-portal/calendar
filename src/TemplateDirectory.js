@@ -1,4 +1,4 @@
-import { getOrdinal } from 'helpers'
+import { getInternationalDate, matrixHeightStyleAt, getOrdinal } from 'helpers'
 
 /**
  * The idea of the templates, is that you provide a function
@@ -18,8 +18,12 @@ export default class TemplateDirectory {
   }
 
   get(name, props) {
-    const template = this.templates.get(name)
-    return template(props)
+    if (this.templates.has(name)) {
+      const template = this.templates.get(name)
+      return template(props)
+    } else {
+      throw `The template "${name}" doesn't exist`
+    }
   }
 
   /**
@@ -31,6 +35,7 @@ export default class TemplateDirectory {
    *  - timelineList        | The list of times down the side
    *  - timelineMatrix      | The event container
    *  - timelineBackground  | The background of the event container
+   *  - eventMatrix         | n/a
    */
   get defaultTemplates() {
     return [
@@ -49,7 +54,6 @@ export default class TemplateDirectory {
             ['div', {class: 'tpc-content__scroll'},
               ['div', {class: 'tpc-content-area'}, 
                 ['div', {class: 'tpc-content__timeline'}, ...timeline],
-                ['div', {class: 'tpc-content-area'}, ''],
                 ['div', {class: 'tpc-content__matrix', 'data-controller': 'tpc-matrix'}, ...matrix],
                 ['div', {class: 'tpc-current-marker'}, ...marker],
               ]
@@ -128,8 +132,8 @@ export default class TemplateDirectory {
           let background = this.get('timelineBackground', props)
 
           let template = [
-            ['div', {class: 'tpc-matrix__events'}, ...events],
-            ['div', {class: 'tpc-matrix__background'}, ...background]
+            ['div', {class: 'tpc-matrix__background'}, ...background],
+            ['div', {class: 'tpc-matrix__events', 'data-tpc-matrix-target': 'matrix'}, ...events],
           ]
 
           //console.log('week matrix', background)
@@ -173,36 +177,28 @@ export default class TemplateDirectory {
           return template
         }
       },
+      {
+        "name": "eventMatrix",
+        "data": ({matrix}) => {
+          let matrices = [...matrix.matrices.values()]
+          let events = []
+
+          matrices = matrices.forEach((matrix) => {
+            events.push(...matrix.events)
+          })
+
+          let templates = events.map((event) => {
+            return (
+              ['div', {class: 'event'},
+                ['div', event.start],
+                ['div', event.finish],
+              ]
+            )
+          })
+
+          return templates
+        }
+      },
     ]
   }
-}
-
-const MINUTES_IN_A_DAY = 1440 // 24 * 60
-
-function matrixHeightStyleAt(hours, minutes=0) {
-  let minutesOnMatrix = MINUTES_IN_A_DAY
-  let currentMinute = (hours * 60) + minutes
-  let decimal = currentMinute / minutesOnMatrix
-  let percentage = decimal * 100
-  let styles = [`top: calc(${percentage}%)`].join(';')
-  return styles
-}
-
-function getInternationalDate(date) {
-  let array = new Intl.DateTimeFormat("en-GB", {
-    weekday: "short",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  }).formatToParts(date)
-
-  let object = array.reduce((obj, item) => {
-    //console.log(item)
-    let { type, value } = item
-    //console.log(type, value)
-    Object.assign(obj, {[type]: value})
-    return obj
-  }, {})
-
-  return object
 }

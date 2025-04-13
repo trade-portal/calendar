@@ -54,17 +54,15 @@ const TOTAL_SEGMENTS = 48 // 24 hours * 2 (30 minute intervals)
  *
  */
 export default class EventMatrix {
-  constructor() {
-    this.events = []
-    this.matrix = []
-    this.addNewRow()
+  constructor(date, events, {offset, size}) {
+    this.date = date
+    this.events = events || []
+    this.matrix = [this.blankRow]
+    this.offset = offset || 0
+    this.size = size || 1
   }
 
-  addNewRow() {
-    this.matrix.push(this.blankRow())
-  }
-
-  blankRow() {
+  get blankRow() {
     return new Array(TOTAL_SEGMENTS).fill(0)
   }
 

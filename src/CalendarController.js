@@ -2,9 +2,11 @@ import { Controller } from "@hotwired/stimulus"
 import TemplateDirectory from './TemplateDirectory.js'
 import RenderingEngine from './RenderingEngine.js'
 import EventMatrix from './EventMatrix.js'
+import EventMatrixGroup from './EventMatrixGroup.js'
 import MonthRange from './MonthRange.js'
 import WeekRange from './WeekRange.js'
 import { MONDAY, groupBy, testEventData } from 'helpers'
+import { dateToString } from './helpers/functions.js'
 
 const DEBUG = true
 
@@ -39,14 +41,12 @@ export default class CalendarController extends Controller {
   static targets = ['timeline', 'view', 'matrix']
 
   connect() {
-    // attach the controller to the element so we can access
-    // from the matrix.
+    // Attach the controller to the element so we can access
+    // from the EventMatrix from the MatrixController.
     this.element.controller = this
+    this.renderingEngine = renderingEngine
 
-    this.events = this.eventData.data
-    this.sortEvents()
-    this.eventsByDate = groupBy(this.events, 'date')
-    this.eventMatrix = new EventMatrix()
+    // this.viewTypeValueChanged will run on it's own
   }
 
   get startDate() {
@@ -54,28 +54,8 @@ export default class CalendarController extends Controller {
   }
 
   viewTypeValueChanged(e) {
+    this.generateDateSeries()
     this.renderView()
-  }
-
-  renderView() {
-    let view = renderingEngine.renderTemplate(
-      this.viewTypeValue,
-      this.viewProps
-    )
-    this.viewTarget.replaceWith(view)
-
-    // Other options:
-    //this.viewTarget.prepend(view)
-    //this.viewTarget.appendChild(view)
-  }
-
-  get viewProps() {
-    let dateSeries = this.generateDateSeries().days
-    return {
-      times: TIMELINE,
-      dateSeries: dateSeries,
-      totalDays: dateSeries.length,
-    }
   }
 
   generateDateSeries() {
@@ -88,27 +68,87 @@ export default class CalendarController extends Controller {
     } else {
       throw `unsupported range type: ${this.dateRangeValue}`
     }
-    return series
+    this.dateSeries = series
   }
 
-  // Sort by start date
-  sortEvents() {
-    this.events.sort((a, b) => {
-      if (a.start < b.start) {
-        return -1
-      } else if (a.start > b.start) {
-        return 1
-      }
-      return 0
+  async generateEventMap() {
+    // Date equality trick
+    // https://stackoverflow.com/a/18743233
+
+    let rawEvents = await this.fetchEventData()
+    this.events = rawEvents.data
+    // We don't need to sort the events if we use a Map()
+    //this.events = sortEvents(rawEvents.data)
+
+    let dates = this.dateSeries.days
+    let eventMap = new Map()
+    dates.forEach((date) => {
+      eventMap.set(dateToString(date), [])
     })
+
+    this.events.forEach((event) => {
+      let array = []
+      if (eventMap.has(event.date)) {
+        array = eventMap.get(event.date)
+      }
+      array.push(event)
+      eventMap.set(event.date, array)
+    })
+    //console.log(eventMap)
+
+    return eventMap
   }
 
-  get eventData() {
-    if (DEBUG === true) {
-      let today = new Date()
-      return testEventData(today)
-    } else {
-      return {}
+  async generateMatrix() {
+    this.eventMap = await this.generateEventMap()
+    this.eventMatrix = new EventMatrixGroup(this.eventMap)
+    return this.eventMatrix
+  }
+
+
+  renderView() {
+    let view = renderingEngine.renderTemplate(
+      this.viewTypeValue,
+      this.viewProps
+    )
+    this.viewTarget.replaceChildren(view)
+
+    // Other options:
+    //this.viewTarget.prepend(view)
+    //this.viewTarget.appendChild(view)
+  }
+
+  get viewProps() {
+    let days = this.dateSeries.days
+    return {
+      times: TIMELINE,
+      dateSeries: days,
+      totalDays: days.length,
     }
   }
+
+  async fetchEventData() {
+    let data
+    if (DEBUG === true) {
+      let today = new Date()
+      data = testEventData(today)
+    } else {
+      data = { data: [] }
+    }
+    return data
+  }
+}
+
+// Sort by start date
+// https://stackoverflow.com/a/41034747
+function sortEvents(events) {
+  return events.sort((a, b) => {
+    return a.start.localeCompare(b.start)
+    //if (a.start < b.start) {
+    //  return -1
+    //} else if (a.start > b.start) {
+    //  return 1
+    //}
+    //return 0
+  })
 }
