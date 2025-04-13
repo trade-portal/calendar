@@ -1,17 +1,13 @@
 import 'controllers'
-import {
-  DateRangeGrid,
-  WeekRange,
-  OCTOBER,
-  MONDAY
-} from 'helpers'
+import { DateRangeGrid, WeekRange } from 'tp-calendar'
+import { OCTOBER, MONDAY } from 'helpers'
 
-const year = 2025
-const month = OCTOBER
-window.start = new Date(year, month, 1)
-window.end   = new Date(year, month, 30)
-window.grid = new DateRangeGrid(start, end, MONDAY)
-console.log(grid)
-
-window.week = new WeekRange(start, MONDAY)
-console.log(week)
+//const year = 2025
+//const month = OCTOBER
+//window.start = new Date(year, month, 1)
+//window.end   = new Date(year, month, 30)
+//window.grid = new DateRangeGrid(start, end, MONDAY)
+//console.log(grid)
+//
+//window.week = new WeekRange(start, MONDAY)
+//console.log(week)

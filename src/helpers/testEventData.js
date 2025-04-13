@@ -1,7 +1,7 @@
 import {
   AT_1AM, AT_2AM, AT_3AM, AT_4AM,  AT_5AM,  AT_6AM,
   AT_7AM, AT_8AM, AT_9AM, AT_10AM, AT_11AM, AT_MIDDAY,
-} from './date_constants.js'
+} from './constants.js'
 
 export default function testEventData(date) {
   let year  = date.getFullYear()

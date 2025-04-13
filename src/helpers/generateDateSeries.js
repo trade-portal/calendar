@@ -6,7 +6,7 @@
  * @param {number} step - The number of intervals to step (default: 1)
  * @returns {Date[]} - Array of dates
  */
-export function generateDateSeries(startDate, endDate, interval = 'day', step = 1) {
+export default function generateDateSeries(startDate, endDate, interval = 'day', step = 1) {
   // Convert string dates to Date objects
   const start = startDate instanceof Date ? startDate : new Date(startDate);
   const end = endDate instanceof Date ? endDate : new Date(endDate);

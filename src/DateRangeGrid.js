@@ -4,7 +4,7 @@ import {
   LAST,
   weekdaysStartingWith,
   dateSeries,
-} from './date_constants.js'
+} from 'helpers'
 
 
 /**

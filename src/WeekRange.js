@@ -4,7 +4,7 @@ import {
   LAST,
   weekdaysStartingWith,
   dateSeries,
-} from './date_constants.js'
+} from 'helpers'
 
 /**
  * The problem we're solving here is that given a date, we want to generate
