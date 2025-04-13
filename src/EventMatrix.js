@@ -58,26 +58,61 @@ const TOTAL_SEGMENTS = 48 // 24 hours * 2 (30 minute intervals)
 export default class EventMatrix {
   constructor(date, events, {offset, size}) {
     this.date = date
-    this.events = events.map(generateEventStruct)
     this.matrix = [this.blankRow]
-    this.offset = offset || 0
-    this.size = size || 1
+    this.offset = offset
+    this.size = size
+
+    this.events = events.map(((event) => {
+      return this.generateEventStruct(event)
+    }).bind(this))
   }
 
-  get blankRow() {
+  blankRow() {
     return new Array(TOTAL_SEGMENTS).fill(0)
   }
-}
 
-function generateEventStruct(eventData) {
-  console.log(eventData)
-  return {
-    event: eventData,
-    matrixData: {
-      top: matrixHeightPercentage(1),
-      bottom: 100 - matrixHeightPercentage(2),
-      left: 0,
-      right: 25,
+  columnWidth() {
+    let percentage = (100.0 / this.size)
+    return percentage
+  }
+
+  columnStart() {
+    let percentage = (this.columnWidth() * this.offset)
+    return percentage
+  }
+
+  columnEnd() {
+    if (this.offset + 1 >= this.size) {
+      return 0
+    } else {
+      let percentage = (this.columnStart() + this.columnWidth())
+      return percentage
+    }
+  }
+
+  generateEventStruct(eventData) {
+    let start = new Date(eventData.start)
+    let end = new Date(eventData.finish)
+
+    let top = matrixHeightPercentage(start.getHours(), start.getMinutes())
+    let bottom = matrixBottomPercentage(end.getHours(), end.getMinutes())
+
+    let left = this.columnStart()
+    let right = this.columnEnd()
+
+    return {
+      event: eventData,
+      matrixData: {
+        top:    top,
+        bottom: bottom,
+        left:   left,
+        right:  right,
+      }
     }
   }
 }
+
+function matrixBottomPercentage(hours, minutes=0) {
+  return (100 - matrixHeightPercentage(hours, minutes))
+}
+

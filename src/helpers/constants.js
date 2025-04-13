@@ -73,7 +73,7 @@ export function startOfYear(date) {
 export function dateSeries(startDate, endDate) {
   let dates = []
   let currentDate = new Date(startDate)
-  while (currentDate < endDate) {
+  while (currentDate <= endDate) {
     dates.push(currentDate)
     currentDate = new Date(currentDate)
     currentDate.setDate(currentDate.getDate() + ONE_DAY)

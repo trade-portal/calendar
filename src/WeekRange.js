@@ -13,8 +13,8 @@ import {
  */
 export default class WeekRange {
   constructor(date, weekStart = MONDAY) {
-    this.initialDate = date
-    this.initialDateDay = date.getDay() // day of the week
+    this.initialDate = new Date(date)
+    this.initialDateDay = this.initialDate.getDay() // day of the week
 
     this.weekdays  = weekdaysStartingWith(weekStart)
     this.weekStartDay = this.weekdays.at(FIRST)
