@@ -22,13 +22,18 @@ export function dateToString(date) {
 }
 
 
-const MINUTES_IN_A_DAY = 1440 // 24 * 60
+export const MINUTES_IN_A_DAY = 1440 // 24 * 60
 
-export function matrixHeightStyleAt(hours, minutes=0) {
+export function matrixHeightPercentage(hours, minutes=0) {
   let minutesOnMatrix = MINUTES_IN_A_DAY
   let currentMinute = (hours * 60) + minutes
   let decimal = currentMinute / minutesOnMatrix
   let percentage = decimal * 100
+  return percentage
+}
+
+export function matrixHeightStyleAt(hours, minutes=0) {
+  let percentage = matrixHeightPercentage(hours, minutes)
   let styles = [`top: calc(${percentage}%)`].join(';')
   return styles
 }

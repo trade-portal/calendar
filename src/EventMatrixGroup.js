@@ -14,7 +14,7 @@ import EventMatrix from './EventMatrix.js'
  */
 export default class EventMatrixGroup {
   constructor(eventMap) {
-    console.log('event matrix group construct', eventMap)
+    //console.log('event matrix group construct', eventMap)
     this.matrices = new Map()
     //this.dateSeries = dateSeries
 
@@ -26,7 +26,7 @@ export default class EventMatrixGroup {
       i++
     }).bind(this))
 
-    console.log(this.matrices)
+    //console.log(this.matrices)
   }
 
   add(matrix) {

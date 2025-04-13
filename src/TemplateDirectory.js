@@ -187,11 +187,22 @@ export default class TemplateDirectory {
             events.push(...matrix.events)
           })
 
-          let templates = events.map((event) => {
+          let templates = events.map(({event, matrixData}) => {
+            let {top, bottom, left, right} = matrixData
+            let positionalStyles = [
+              `top: ${top}%`, `bottom: ${bottom}%`, `left: ${left}%`, `right: ${right}%`
+            ].join(';')
+
             return (
-              ['div', {class: 'event'},
-                ['div', event.start],
-                ['div', event.finish],
+              ['div', {class: 'event', style: positionalStyles},
+                ['div', {class: 'event__inner'},
+                  ['button', {class: 'button'},
+                    ['div', event.start],
+                    ['div', event.finish],
+                  ],
+                  ['div', {class: 'resizer top'}, ''],
+                  ['div', {class: 'resizer bottom'}, ''],
+                ]
               ]
             )
           })

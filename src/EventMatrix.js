@@ -1,3 +1,5 @@
+import { matrixHeightPercentage, MINUTES_IN_A_DAY } from 'helpers'
+
 const TOTAL_SEGMENTS = 48 // 24 hours * 2 (30 minute intervals)
 
 /**
@@ -56,7 +58,7 @@ const TOTAL_SEGMENTS = 48 // 24 hours * 2 (30 minute intervals)
 export default class EventMatrix {
   constructor(date, events, {offset, size}) {
     this.date = date
-    this.events = events || []
+    this.events = events.map(generateEventStruct)
     this.matrix = [this.blankRow]
     this.offset = offset || 0
     this.size = size || 1
@@ -65,15 +67,17 @@ export default class EventMatrix {
   get blankRow() {
     return new Array(TOTAL_SEGMENTS).fill(0)
   }
-
-  addEvent(eventData) {
-  }
 }
 
 function generateEventStruct(eventData) {
+  console.log(eventData)
   return {
-    eventData: eventData,
-    start: 0,
-    finish: 4,
+    event: eventData,
+    matrixData: {
+      top: matrixHeightPercentage(1),
+      bottom: 100 - matrixHeightPercentage(2),
+      left: 0,
+      right: 25,
+    }
   }
 }
