@@ -12,20 +12,36 @@
     "stimulus-calendar": "http://localhost:5000/src/index.js",
     "@hotwired/stimulus": "http://localhost:5000/node_modules/@hotwired/stimulus/dist/stimulus.js",
     "@hotwired/stimulus-loading": "http://localhost:5000/assets/js/stimulus-loading.js",
-    "controllers/application": "http://localhost:5000/assets/js/controllers/application.js",
     "controllers": "http://localhost:5000/assets/js/controllers/index.js",
+    "controllers/application": "http://localhost:5000/assets/js/controllers/application.js",
+    "controllers/calendar_controller": "http://localhost:5000/assets/js/controllers/calendar_controller.js",
     "helpers": "http://localhost:5000/src/helpers/index.js"
   }
 }
     </script>
-    <link rel="modulepreload" href="http://localhost:5000/assets/js/application.js">
-    <link rel="modulepreload" href="http://localhost:5000/node_modules/@hotwired/stimulus/dist/stimulus.js">
-    <link rel="modulepreload" href="http://localhost:5000/assets/js/stimulus-loading.js">
-    <link rel="modulepreload" href="http://localhost:5000/src/helpers/index.js">
+
+    <link rel="stylesheet" href="http://localhost:5000/assets/css/normalize.css">
+    <link rel="stylesheet" href="http://localhost:5000/assets/css/main.css">
     <script type="module">
       import 'application'
     </script>
   </head>
   <body>
+    <div class="page-container">
+      <div class="tp-calendar" data-controller="calendar">
+        <div class="tp-calendar__controls" data-calendar-target="controls"></div>
+        <div class="tp-calendar__content" data-calendar-target="view">
+          <div class="tp-content-header"></div>
+          <div class="tp-content__scroll">
+            <div class="tp-content-area">
+              <div class="tp-content__matrix">
+                <div class="tp-matrix__events"></div>
+              </div>
+              <div class="marker"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
