@@ -1,14 +1,21 @@
 # calendar
 
-## Local Development
+## How to try it out...
 
-Install using
+Download the repo
+
+```
+git clone https://github.com/trade-portal/calendar
+cd calendar
+```
+
+Install dependencies using
 
 ```
 yarn install
 ```
 
-Run using
+Start the dev server with
 
 ```
 yarn run dev
