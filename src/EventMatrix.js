@@ -65,7 +65,7 @@ export default class EventMatrix {
   }
 
   blankRow() {
-    return Array.new(TOTAL_SEGMENTS).fill(0)
+    return new Array(TOTAL_SEGMENTS).fill(0)
   }
 
   addEvent(eventData) {

@@ -99,7 +99,7 @@ $headerElements: 1;
 
       &-container {
         display: grid;
-        grid-auto-columns: auto;
+        grid-auto-columns: 1fr;
         grid-auto-flow: column dense;
         padding-right: var(--scrollbarWidth);
       }
@@ -107,6 +107,8 @@ $headerElements: 1;
       .heading {
         grid-row-start: 1;
         grid-row-end: 1;
+        display: flex;
+        gap: 0.2rem;
       }
     }
 

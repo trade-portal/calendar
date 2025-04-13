@@ -1,3 +1,5 @@
+import { getOrdinal } from 'helpers'
+
 /**
  * The idea of the templates, is that you provide a function
  * that returns a renderable array
@@ -64,14 +66,20 @@ export default class TemplateDirectory {
           let totalDays = props.totalDays
           let headers = []
 
-          for (let i = 0; i < totalDays; i++) {
+          props.dateSeries.forEach((date => {
             headers.push(
-              this.get('timelineDayHeader', {index: i})
+              this.get('timelineDayHeader', {date: date})
             )
-          }
+          }).bind(this))
+
+          // for (let i = 0; i < totalDays; i++) {
+          //   headers.push(
+          //     this.get('timelineDayHeader', {index: i})
+          //   )
+          // }
 
           let template = [
-            ['div', {class: ''}, ''],
+            ['div', {class: 'spacer'}, ''],
             ['div', {class: 'tpc-content-header-container'}, ...headers],
           ]
 
@@ -80,10 +88,18 @@ export default class TemplateDirectory {
       },
       {
         "name": "timelineDayHeader",
-        "data": ({index}) => {
+        "data": ({date}) => {
           let classes = ['heading'].join(';')
           let styles = [''].join(';')
-          return ['div', {class: classes, style: styles}, index]
+          let ordinal = getOrdinal(date.getDate())
+          let dateParts = getInternationalDate(date)
+          // console.log(dateParts)
+          return (
+            ['div', {class: classes, style: styles}, 
+              ['span', ordinal],
+              ['span', dateParts.weekday]
+            ]
+          )
         }
       },
       {
@@ -93,9 +109,11 @@ export default class TemplateDirectory {
           let template = times.map((time) => {
             let hour = time.match('0?([0-9]|1[0-9]|2[0-3]):')
             hour ? hour : hour = ''
-            return ['div', {class: `time time-hour-${hour[1]}`}, [
-              'div', {class: 'time-label'}, time
-            ]]
+            return (
+              ['div', {class: `time time-hour-${hour[1]}`},
+                ['div', {class: 'time-label'}, time]
+              ]
+            )
           })
 
           //console.log('timeline', template)
@@ -168,4 +186,23 @@ function matrixHeightStyleAt(hours, minutes=0) {
   let percentage = decimal * 100
   let styles = [`top: calc(${percentage}%)`].join(';')
   return styles
+}
+
+function getInternationalDate(date) {
+  let array = new Intl.DateTimeFormat("en-GB", {
+    weekday: "short",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).formatToParts(date)
+
+  let object = array.reduce((obj, item) => {
+    //console.log(item)
+    let { type, value } = item
+    //console.log(type, value)
+    Object.assign(obj, {[type]: value})
+    return obj
+  }, {})
+
+  return object
 }

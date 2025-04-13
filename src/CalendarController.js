@@ -2,7 +2,11 @@ import { Controller } from "@hotwired/stimulus"
 import TemplateDirectory from './TemplateDirectory.js'
 import RenderingEngine from './RenderingEngine.js'
 import EventMatrix from './EventMatrix.js'
-import { groupBy, testEventData } from 'helpers'
+import MonthRange from './MonthRange.js'
+import WeekRange from './WeekRange.js'
+import { MONDAY, groupBy, testEventData } from 'helpers'
+
+const DEBUG = true
 
 // I'm sure there's a way to generate this dynamically
 // but I just couldn't be arsed at the time.
@@ -28,26 +32,63 @@ const renderingEngine = new RenderingEngine(new TemplateDirectory())
  */
 export default class CalendarController extends Controller {
   static values = {
-    startDate: String,
+    startDate: {type: String, default: (new Date()).toJSON() },
+    dateRange: {type: String, default: 'week'},
     viewType:  {type: String, default: 'timeline'}
   }
-  static targets = ['timeline', 'view']
+  static targets = ['timeline', 'view', 'matrix']
 
   connect() {
+    // attach the controller to the element so we can access
+    // from the matrix.
+    this.element.controller = this
+
     this.events = this.eventData.data
     this.sortEvents()
     this.eventsByDate = groupBy(this.events, 'date')
+    this.eventMatrix = new EventMatrix()
+  }
 
-    // render view
-    let viewData = {
-      times: TIMELINE,
-      totalDays: 7,
-    }
-    let view = renderingEngine.renderTemplate(this.viewTypeValue, viewData)
+  get startDate() {
+    return new Date(this.startDateValue)
+  }
+
+  viewTypeValueChanged(e) {
+    this.renderView()
+  }
+
+  renderView() {
+    let view = renderingEngine.renderTemplate(
+      this.viewTypeValue,
+      this.viewProps
+    )
     this.viewTarget.replaceWith(view)
+
+    // Other options:
     //this.viewTarget.prepend(view)
     //this.viewTarget.appendChild(view)
+  }
 
+  get viewProps() {
+    let dateSeries = this.generateDateSeries().days
+    return {
+      times: TIMELINE,
+      dateSeries: dateSeries,
+      totalDays: dateSeries.length,
+    }
+  }
+
+  generateDateSeries() {
+    let startDate = this.startDate
+    let series
+    if (this.dateRangeValue === 'week') {
+      series = new WeekRange(startDate, MONDAY)
+    } else if (this.dateRangeValue === 'month') {
+      series = new MonthRange(startDate, MONDAY)
+    } else {
+      throw `unsupported range type: ${this.dateRangeValue}`
+    }
+    return series
   }
 
   // Sort by start date
@@ -63,7 +104,11 @@ export default class CalendarController extends Controller {
   }
 
   get eventData() {
-    let today = new Date()
-    return testEventData(today)
+    if (DEBUG === true) {
+      let today = new Date()
+      return testEventData(today)
+    } else {
+      return {}
+    }
   }
 }

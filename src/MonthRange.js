@@ -26,7 +26,7 @@ import {
  *
  * Then we can iterate per week and then per day.
  */
-export default class DateRangeGrid {
+export default class MonthRange {
   constructor(startDate, endDate, weekStart = MONDAY) {
     this.startDate = startDate
     this.startDateDay = startDate.getDay() // day of the week
