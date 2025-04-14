@@ -4,6 +4,7 @@ import {
   LAST,
   weekdaysStartingWith,
   dateSeries,
+  generateDateSeries,
 } from 'helpers'
 
 /**
@@ -24,7 +25,7 @@ export default class WeekRange {
 
   get days() {
     if (!this.dateSeries) {
-      this.dateSeries = dateSeries(this.weekStartDate, this.weekEndDate)
+      this.dateSeries = generateDateSeries(this.weekStartDate, this.weekEndDate)
     }
     return this.dateSeries
   }
@@ -54,7 +55,7 @@ export default class WeekRange {
   }
 
   get extraEndDays() {
-    return this.weekdays.length - this.weekdays.indexOf(this.initialDateDay)
+    return this.weekdays.length - this.weekdays.indexOf(this.initialDateDay) - 1
   }
 
 }
